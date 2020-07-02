@@ -17,14 +17,50 @@ app.use(express.json());
 //-------------------------------
 
 //route that sends user to homepage
-app.get("*", function (req, res)  {
-  res.sendFile(path.join(__dirname + "/public/index.html"));
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
 //route that sends user to notes page
-app.get("/notes", function (req, res)  {
-  res.sendFile(path.join(__dirname + "/public/notes.html"));
+app.get("/notes", function (req, res) {
+  res.sendFile(path.join(__dirname, "notes.html"));
 });
+
+// //routes api
+// //-------------------------------
+// // DISPLAY notes///////////
+// app.get("/api/notes", function (req, res) {
+//   return res.json({ title: "text" });
+// });
+
+// // POST notes///////////////
+// app.post("/api/notes", function (req, res) {
+//   return res.json({ title: "text" });
+
+//   var newNotes = req.title;
+
+ // // ??????how to save new notes
+
+  // //   newNotes.routeName = newNotes.name.replace(/\s+/g, "").toLowerCase();
+
+  // //   console.log(newNotes);
+
+  // //   characters.push(newNotes);
+
+  // //   res.json(newNotes);
+// });
+
+// // DELETE notes
+// app.delete("/api/notes/:id", function (req, res) {
+//   const id = req.params._id;
+//   const oldNotes = req.body;
+//   Notes.removeNotes(id, (err, oldNotes) => {
+//     if (err) {
+//       throw err;
+//     }
+//     res.json(oldNotes);
+//   });
+// });
 
 //server is listening
 //-------------------------------
