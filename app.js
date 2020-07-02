@@ -28,12 +28,14 @@ app.get("/notes",  (req, res) => {
 });
 
 
-// //routes api
-// //-------------------------------
-// // DISPLAY notes///////////
-// app.get("/api/notes", function (req, res) {
-//   return res.json({ title: "text" });
-// });
+//routes api
+//-------------------------------
+// DISPLAY notes///////////
+app.get("/api/notes", function (req, res) {
+
+  let dbPath = require("./db/db.json");
+  return res.send(dbPath);
+});
 
 // // POST notes///////////////
 // app.post("/api/notes", function (req, res) {
