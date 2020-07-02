@@ -12,19 +12,21 @@ const PORT = 3000;
 // seting up express to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static("public"))
 
 //routes HTML
 //-------------------------------
 
 //route that sends user to homepage
-app.get("*", function (req, res) {
-  res.sendFile(path.join(__dirname, "/public/index.html"));
+app.get("/",  (req, res) => {
+  res.sendFile(path.join(__dirname, "/public/assets/index.html"));
 });
 
 //route that sends user to notes page
-app.get("/notes", function (req, res) {
-  res.sendFile(path.join(__dirname, "notes.html"));
+app.get("/notes",  (req, res) => {
+  res.sendFile(path.join(__dirname, "/public/assets/notes.html"));
 });
+
 
 // //routes api
 // //-------------------------------
