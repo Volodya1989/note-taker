@@ -17,13 +17,13 @@ app.use(express.json());
 //-------------------------------
 
 //route that sends user to homepage
-app.get("*", (res, req) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+app.get("*", function (req, res)  {
+  res.sendFile(path.join(__dirname + "/public/index.html"));
 });
 
 //route that sends user to notes page
-app.get("/notes", (res, req) => {
-  res.sendFile(path.join(__dirname, "notes.html"));
+app.get("/notes", function (req, res)  {
+  res.sendFile(path.join(__dirname + "/public/notes.html"));
 });
 
 //server is listening
