@@ -12,47 +12,46 @@ const PORT = 3000;
 // seting up express to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static("public"))
+app.use(express.static("public"));
 
 //routes HTML
 //-------------------------------
 
 //route that sends user to homepage
-app.get("/",  (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/assets/index.html"));
 });
 
 //route that sends user to notes page
-app.get("/notes",  (req, res) => {
+app.get("/notes", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/assets/notes.html"));
 });
-
 
 //routes api
 //-------------------------------
 // DISPLAY notes///////////
 app.get("/api/notes", function (req, res) {
-
   let dbPath = require("./db/db.json");
   return res.send(dbPath);
 });
 
-// // POST notes///////////////
-// app.post("/api/notes", function (req, res) {
-//   return res.json({ title: "text" });
+// POST notes///////////////
+app.post("/api/notes", function (req, res) {
+  var body = {
+    title: req.body.title,
+    text: req.body.text,
+  };
+  let filePath = path.join(__dirname, "./db/db.json");
 
-//   var newNotes = req.title;
-
- // // ??????how to save new notes
-
-  // //   newNotes.routeName = newNotes.name.replace(/\s+/g, "").toLowerCase();
-
-  // //   console.log(newNotes);
-
-  // //   characters.push(newNotes);
-
-  // //   res.json(newNotes);
-// });
+  fs.appendFile(filePath, JSON.stringify(body), function (err) {
+    if (err) {
+      throw err;
+    }
+    res.status(200).json({
+      message: "File successfully saved",
+    });
+  });
+});
 
 // // DELETE notes
 // app.delete("/api/notes/:id", function (req, res) {
