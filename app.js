@@ -42,21 +42,27 @@ app.get("/api/notes", function (req, res) {
 
 // POST notes///////////////
 app.post("/api/notes", function (req, res) {
-  var body = {
+  let filePath = path.join(__dirname, "./db/db.json");
+
+  const body = {
     title: req.body.title,
     text: req.body.text,
   };
-  newNotes.push(body)
-  let filePath = path.join(__dirname, "./db/db.json");
+  // newNotes.push(body);
 
-  fs.appendFile(filePath, JSON.stringify(newNotes), function (err) {
-    if (err) {
-      throw err;
-    }
-    let dbPath = require("./db/db.json");
+  fs.readFile(filePath, function (err, data) {
+    if (err) throw err;
 
-    return res.send(dbPath);
-
+    var json = JSON.parse(data);
+    json.push(body);
+    fs.writeFile(filePath, JSON.stringify(json, null, 4), "utf8", function (
+      err
+    ) {
+      if (err) {
+        throw err;
+      }
+    });
+    return res.send(filePath);
   });
 });
 
