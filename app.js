@@ -54,7 +54,7 @@ app.post("/api/notes", function (req, res) {
 
     var json = JSON.parse(data);
     json.push(body);
-    let i = 0;
+    let i = 1;
     //adds id to each object
     json.map((n) => {
       n["id"] = i;
@@ -73,16 +73,27 @@ app.post("/api/notes", function (req, res) {
 });
 
 // DELETE notes
-// app.delete("/api/notes/:id", function (req, res) {
-//   const id = req.params.id;
-//   const oldNotes = req.body;
-//   Notes.removeNotes(id, (err, oldNotes) => {
-//     if (err) {
-//       throw err;
-//     }
-//     res.json(oldNotes);
-//   });
-// });
+app.delete("/api/notes/:id", function (req, res) {
+  let filePath = path.join(__dirname, "./db/db.json");
+  fs.readFile(filePath, function (err, data) {
+    if (err) throw err;
+
+    let json = JSON.parse(data);
+    let deleteId = req.params.id; //Get the id through req.params.id of the object you are going to delete
+    let deleteObj = json.find((user) => user.id == deleteId); // As you have only Id of the object, we want to get the entire object from the array. find() will fetch the object from the array whose id is equal to deleteId and assign it to deleteObj.
+    let deleteIndex = json.indexOf(deleteObj); //Find the index of the object fetched from the JSON array.
+    json.splice(deleteIndex, 1); // Splice/ remove the object from the JSON Array.
+
+    fs.writeFile(filePath, JSON.stringify(json, null, 4), "utf8", function (
+      err
+    ) {
+      if (err) {
+        throw err;
+      }
+    });
+    res.send(filePath);
+  });
+});
 
 //server is listening
 //-------------------------------

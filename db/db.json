@@ -2,16 +2,11 @@
     {
         "title": "Test Title",
         "text": "Test text",
-        "id": 0
-    },
-    {
-        "title": "title text",
-        "text": "texy",
         "id": 1
     },
     {
-        "title": "title text",
-        "text": "texy",
+        "title": "dfsg",
+        "text": "dsfg",
         "id": 2
     }
 ]
