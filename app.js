@@ -43,7 +43,6 @@ app.get("/api/notes", function (req, res) {
 // POST notes///////////////
 app.post("/api/notes", function (req, res) {
   let filePath = path.join(__dirname, "./db/db.json");
-
   const body = {
     title: req.body.title,
     text: req.body.text,
@@ -55,6 +54,12 @@ app.post("/api/notes", function (req, res) {
 
     var json = JSON.parse(data);
     json.push(body);
+    let i = 0;
+    //adds id to each object
+    json.map((n) => {
+      n["id"] = i;
+      i++;
+    });
     fs.writeFile(filePath, JSON.stringify(json, null, 4), "utf8", function (
       err
     ) {
@@ -62,13 +67,14 @@ app.post("/api/notes", function (req, res) {
         throw err;
       }
     });
-    return res.send(filePath);
   });
+  //some problem with displaying new note right away!!!!!!!!!!!!!!!!!!!!!!!!
+  return res.send(filePath);
 });
 
-// // DELETE notes
+// DELETE notes
 // app.delete("/api/notes/:id", function (req, res) {
-//   const id = req.params._id;
+//   const id = req.params.id;
 //   const oldNotes = req.body;
 //   Notes.removeNotes(id, (err, oldNotes) => {
 //     if (err) {
