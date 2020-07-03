@@ -26,6 +26,11 @@ app.get("/", (req, res) => {
 app.get("/notes", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/assets/notes.html"));
 });
+//Data
+//-------------------------------
+let newNotes = [];
+
+//-------------------------------
 
 //routes api
 //-------------------------------
@@ -41,15 +46,17 @@ app.post("/api/notes", function (req, res) {
     title: req.body.title,
     text: req.body.text,
   };
+  newNotes.push(body)
   let filePath = path.join(__dirname, "./db/db.json");
 
-  fs.appendFile(filePath, JSON.stringify(body), function (err) {
+  fs.appendFile(filePath, JSON.stringify(newNotes), function (err) {
     if (err) {
       throw err;
     }
-    res.status(200).json({
-      message: "File successfully saved",
-    });
+    let dbPath = require("./db/db.json");
+
+    return res.send(dbPath);
+
   });
 });
 
