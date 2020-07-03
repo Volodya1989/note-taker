@@ -1,3 +1,4 @@
+//Volodymyr Petrystya  07/03/2020
 //dependencies
 // ------------------------------
 const express = require("express");
@@ -7,32 +8,22 @@ const fs = require("fs");
 //setting up express
 //-------------------------------
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // seting up express to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-//routes HTML
+// HTML route 
 //-------------------------------
-
-//route that sends user to homepage
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "/public/assets/index.html"));
-});
-
 //route that sends user to notes page
 app.get("/notes", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/assets/notes.html"));
 });
-//Data
-//-------------------------------
-let newNotes = [];
 
-//-------------------------------
 
-//routes api
+// api routes 
 //-------------------------------
 // DISPLAY notes///////////
 app.get("/api/notes", function (req, res) {
@@ -47,7 +38,6 @@ app.post("/api/notes", function (req, res) {
     title: req.body.title,
     text: req.body.text,
   };
-  // newNotes.push(body);
 
   fs.readFile(filePath, function (err, data) {
     if (err) throw err;
@@ -68,6 +58,7 @@ app.post("/api/notes", function (req, res) {
       }
     });
   });
+
   //some problem with displaying new note right away!!!!!!!!!!!!!!!!!!!!!!!!
   return res.send(filePath);
 });
@@ -79,10 +70,10 @@ app.delete("/api/notes/:id", function (req, res) {
     if (err) throw err;
 
     let json = JSON.parse(data);
-    let deleteId = req.params.id; //Get the id through req.params.id of the object you are going to delete
-    let deleteObj = json.find((user) => user.id == deleteId); // As you have only Id of the object, we want to get the entire object from the array. find() will fetch the object from the array whose id is equal to deleteId and assign it to deleteObj.
-    let deleteIndex = json.indexOf(deleteObj); //Find the index of the object fetched from the JSON array.
-    json.splice(deleteIndex, 1); // Splice/ remove the object from the JSON Array.
+    let objID = req.params.id; 
+    let delObj = json.find((user) => user.id == objID); 
+    let delIndex = json.indexOf(delObj); 
+    json.splice(delIndex, 1); 
 
     fs.writeFile(filePath, JSON.stringify(json, null, 4), "utf8", function (
       err
@@ -93,6 +84,13 @@ app.delete("/api/notes/:id", function (req, res) {
     });
     res.send(filePath);
   });
+});
+
+// HTML route 
+//-------------------------------
+//route that sends user to homepage
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/public/assets/index.html"));
 });
 
 //server is listening
