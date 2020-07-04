@@ -46,8 +46,8 @@ app.post("/api/notes", function (req, res) {
     json.push(body);
     let i = 1;
     //adds id to each object
-    json.map((n) => {
-      n["id"] = i;
+    json.map((obj) => {
+      obj["id"] = i;
       i++;
     });
     fs.writeFile(filePath, JSON.stringify(json, null, 4), "utf8", function (
