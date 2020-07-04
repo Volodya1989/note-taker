@@ -9,6 +9,7 @@ const fs = require("fs");
 //-------------------------------
 const app = express();
 const PORT = process.env.PORT || 3000;
+const filePath = path.join(__dirname, "./db/db.json");
 
 // seting up express to handle data parsing
 app.use(express.urlencoded({ extended: true }));
@@ -24,7 +25,7 @@ app.get("/notes", (req, res) => {
 
 // api routes
 //-------------------------------
-// DISPLAY notes///////////
+// DISPLAY notes
 app.get("/api/notes", function (req, res) {
   fs.readFile("./db/db.json", "utf8", (err, data) => {
     if (err) {
@@ -33,13 +34,10 @@ app.get("/api/notes", function (req, res) {
     const arrayOfNotes = JSON.parse(data);
     res.json(arrayOfNotes);
   });
-  // let dbPath = require("./db/db.json");
-  // return res.send(dbPath);
 });
 
-// POST notes///////////////
+// POST notes
 app.post("/api/notes", function (req, res) {
-  let filePath = path.join(__dirname, "./db/db.json");
   const body = {
     title: req.body.title,
     text: req.body.text,
@@ -48,53 +46,43 @@ app.post("/api/notes", function (req, res) {
   fs.readFile(filePath, function (err, data) {
     if (err) throw err;
 
-    var arrayOfNotes = JSON.parse(data);
+    const arrayOfNotes = JSON.parse(data);
     arrayOfNotes.push(body);
-    let i = 1;
     //adds id to each object
-    arrayOfNotes.map((obj) => {
-      obj["id"] = i;
-      i++;
-    });
+    arrayOfNotes.forEach((obj, i) => (obj.id = ++i));
+
     fs.writeFile(
       filePath,
       JSON.stringify(arrayOfNotes, null, 4),
       "utf8",
       function (err) {
-        if (err) {
-          throw err;
-        }
+        if (err) throw err;
         res.json(arrayOfNotes);
       }
     );
   });
-
-  //some problem with displaying new note right away!!!!!!!!!!!!!!!!!!!!!!!!
-  // return res.send(filePath);
 });
 
 // DELETE notes
 app.delete("/api/notes/:id", function (req, res) {
-  let filePath = path.join(__dirname, "./db/db.json");
   fs.readFile(filePath, function (err, data) {
     if (err) throw err;
 
-    let arrayOfNotes = JSON.parse(data);
-    let objID = req.params.id;
-    let delObj = arrayOfNotes.find((user) => user.id == objID);
-    let delIndex = arrayOfNotes.indexOf(delObj);
-    arrayOfNotes.splice(delIndex, 1);
+    const { params } = req;
+    const arrayOfNotes = JSON.parse(data);
+    const objID = params.id;
+    const filteredNotes = arrayOfNotes.filter((user) => user.id != objID);
 
-    fs.writeFile(filePath, JSON.stringify(arrayOfNotes, null, 4), "utf8", function (
-      err
-    ) {
-      if (err) {
-        throw err;
+    fs.writeFile(
+      filePath,
+      JSON.stringify(filteredNotes, null, 4),
+      "utf8",
+      function (err) {
+        if (err) throw err;
+
+        res.json(arrayOfNotes);
       }
-      res.json(arrayOfNotes);
-
-    });
-    // res.send(filePath);
+    );
   });
 });
 
