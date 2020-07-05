@@ -2,7 +2,7 @@
 //dependencies
 // ------------------------------
 const express = require("express");
-var path = require("path");
+const path = require("path");
 const fs = require("fs");
 
 //setting up express
@@ -19,14 +19,14 @@ app.use(express.static("public"));
 // HTML route
 //-------------------------------
 //route that sends user to notes page
-app.get("/notes", (req, res) => {
+app.get("/notes", (_, res) => {
   res.sendFile(path.join(__dirname, "/public/assets/notes.html"));
 });
 
 // api routes
 //-------------------------------
 // DISPLAY notes
-app.get("/api/notes", function (req, res) {
+app.get("/api/notes", (_, res) => {
   fs.readFile("./db/db.json", "utf8", (err, data) => {
     if (err) {
       return res.send("An error occurred reading your data.");
@@ -37,13 +37,13 @@ app.get("/api/notes", function (req, res) {
 });
 
 // POST notes
-app.post("/api/notes", function (req, res) {
+app.post("/api/notes", (req, res) => {
   const body = {
     title: req.body.title,
     text: req.body.text,
   };
 
-  fs.readFile(filePath, function (err, data) {
+  fs.readFile(filePath, (err, data) => {
     if (err) throw err;
 
     const arrayOfNotes = JSON.parse(data);
@@ -55,7 +55,7 @@ app.post("/api/notes", function (req, res) {
       filePath,
       JSON.stringify(arrayOfNotes, null, 4),
       "utf8",
-      function (err) {
+      (err) => {
         if (err) throw err;
         res.json(arrayOfNotes);
       }
@@ -64,8 +64,8 @@ app.post("/api/notes", function (req, res) {
 });
 
 // DELETE notes
-app.delete("/api/notes/:id", function (req, res) {
-  fs.readFile(filePath, function (err, data) {
+app.delete("/api/notes/:id", (req, res) => {
+  fs.readFile(filePath, (err, data) => {
     if (err) throw err;
 
     const { params } = req;
@@ -77,7 +77,7 @@ app.delete("/api/notes/:id", function (req, res) {
       filePath,
       JSON.stringify(filteredNotes, null, 4),
       "utf8",
-      function (err) {
+      (err) => {
         if (err) throw err;
 
         res.json(arrayOfNotes);
@@ -89,7 +89,7 @@ app.delete("/api/notes/:id", function (req, res) {
 // HTML route
 //-------------------------------
 //route that sends user to homepage
-app.get("*", (req, res) => {
+app.get("*", (_, res) => {
   res.sendFile(path.join(__dirname, "/public/assets/index.html"));
 });
 
