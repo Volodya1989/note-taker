@@ -21,9 +21,7 @@
 
 ## Usage
 
-This Note Taker WEB Application was created for people who  want to be able to write, save notes
-
-and to delete notes they've written before. It serves as application that helps to  organize thoughts and keep track of tasks that people need to complete.
+This Note Taker WEB Application was created for people who  want to be able to write, save notes and to delete notes they've written before. It serves as application that helps to  organize thoughts and keep track of tasks that people need to complete.
 
 The following screenshot demonstrates the application functionality:
 
