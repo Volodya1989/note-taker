@@ -3,5 +3,10 @@
         "title": "Test",
         "text": "tes",
         "id": 1
+    },
+    {
+        "title": "Tuesday",
+        "text": "Test text!",
+        "id": 2
     }
 ]
