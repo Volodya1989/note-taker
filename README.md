@@ -1,7 +1,5 @@
 # Note Taker Application
 
-# Team Generator CLI Application
-
 ![badmath](https://img.shields.io/badge/NOTE-taker-yellow)
 
 ![badmath](https://img.shields.io/badge/license-MIT-brightgreen)
